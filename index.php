@@ -1,6 +1,5 @@
 <?php
-if ( !file_exists('config.php') )
-{
+if ( !file_exists('config.php') ) {
 	header('location: setup.php');
 	exit;
 }
@@ -19,10 +18,9 @@ include('config.php');
 ?>
 <script type='text/javascript' src='jwplayer<?=$jwversion;?>/jwplayer.js'></script>
 <?php
-if ( $jwversion == 7 )
-{
+if ( $jwversion == 7 ) {
 	?>
-	<script>jwplayer.key="<?=$jwplayer_key;?>";</script>
+	<script>jwplayer.key="<?php echo $jwplayer_key;?>";</script>
 	<link href='mlp-skin.css' rel='stylesheet'>
 	<?php
 }
@@ -34,31 +32,25 @@ if ( $jwversion == 7 )
 <script src='//oss.maxcdn.com/respond/1.4.2/respond.min.js'></script>
 <![endif]-->
 <?php
-// Change $debugging option in config.php to true then 
+// Change $debugging option in config.php to true then
 // add &debug=log or ?debug=log to the end of the url query string
 // Load a page without the added &debug=log to disable logging
 // Change $debugging option in config.php back to false
-if ( isset($_GET['debug']) && $_GET['debug']=='log' && $debugging == true )
-{
+if ( isset($_GET['debug']) && $_GET['debug']=='log' && $debugging == true ){
 	$debug = 'log';
 }
 include('functions.php');
-if ( isset($_GET['playmode']) )
-{
+if ( isset($_GET['playmode']) ) {
 	$playMode = rawurlencode($_GET['playmode']);
 	$container_class = 'container-fluid container-fluid-noplayer';
-}
-else
-{
+} else {
 	// Apply a different container class for player vs. no player
 	$container_class = 'container-fluid';
 }
-if ( isset($_GET['track']) )
-{
+if ( isset($_GET['track']) ) {
 	$track = rawurlencode($_GET['track']);
 }
-if ( isset($_GET['trackno']) )
-{
+if ( isset($_GET['trackno']) ) {
 	$trackno = rawurlencode($_GET['trackno']);
 }
 // Determine if direct links to files are OK or if stream is required
@@ -68,15 +60,14 @@ $stream = getWebRoot($root);
 <body>
 <?php
 // Process the current directory from query string
-$dir = (isset($_GET['dir'])?rawurldecode($_GET['dir']):null);
-if ( empty($dir) )
-{
+$dir = (isset($_GET['dir']) ? rawurldecode($_GET['dir']) : null);
+if ( empty($dir) ) {
 	$dir = $root;
 }
 // Remove the trailing slash if necessary
 $dir = getDirectory($dir);
 ?>
-<div id='container' class='<?=$container_class;?>'>
+<div id='container' class='<?php echo $container_class;?>'>
 	<?php
 	// Remove black player bar at top of the page if nothing to play
 	if ( !empty($playMode) )
@@ -175,19 +166,19 @@ if ( !empty($playMode) )
 			width: playerWidth,
 			autostart: true,
 			controls: true,
-			<?=$skin;?>
+			<?php echo $skin;?>
 			<?php
 			if ( isset($primary) )
 			{
 				echo $primary;
 			}
 			?>
-			<?=$repeat;?>
-			<?=$playlist;?>
+			<?php echo $repeat;?>
+			<?php echo $playlist;?>
 		});
 		// Force the player width once it gets going
 		// Version 6
-		if ( <?=$jwversion;?>==6 )
+		if ( <?php echo $jwversion;?>==6 )
 		{
 			jwplayer().onPlay(function(){
 				setPlayerWidth();
@@ -199,8 +190,8 @@ if ( !empty($playMode) )
 				setPlayerWidth();
 			});
 		}
-		
-		if ( <?=$jwversion;?>==6 )
+
+		if ( <?php echo $jwversion;?>==6 )
 		{
 			jwplayer().onPlaylistItem(function(e){
 				showNowPlaying(e);
@@ -212,7 +203,7 @@ if ( !empty($playMode) )
 				showNowPlaying(e);
 			});
 		}
-		
+
 		// Fill the width of the container with the player
 		setPlayerWidth();
 		// Get the width of the folder/track list
@@ -232,7 +223,7 @@ if ( !empty($playMode) )
 			jwplayer().resize(playerWidth,40);
 			scrollToTrack(jwplayer().getPlaylistIndex());
 		}
-		function showNowPlaying(e) 
+		function showNowPlaying(e)
 		{
 			// Show the play button icon on the current track
 			var text = $('#'+e.index).html();
@@ -250,7 +241,7 @@ if ( !empty($playMode) )
 			if ( $playMode == 'track' )
 			{
 				?>
-				var trackno = <?=$trackno;?>;
+				var trackno = <?php echo $trackno;?>;
 				$('#'+trackno).addClass('active');
 				<?php
 			}
